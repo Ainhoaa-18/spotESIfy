@@ -1,4 +1,4 @@
-# SpotESIfy API — Dockerfile
+# SpotESIfy API — Dockerfile #arreglo dockerfile para imagen ligera
 FROM node:20-alpine
 
 WORKDIR /app

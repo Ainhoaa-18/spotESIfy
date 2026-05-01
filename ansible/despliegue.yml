@@ -1,0 +1,42 @@
+---
+  - name: Despliegue SpotESIfy
+    hosts: all
+    become: true
+
+    tasks:
+     - name: Instalacion docker
+       apt:
+        name: docker.io
+        state: present
+       ignore_errors: true
+
+     - name: Instalacion docker compose
+       apt:
+        name: docker-compose-v2
+        state: present
+       ignore_errors: true
+
+     - name: Comprobar arranque
+       service:
+         name: docker
+         state: started
+         enabled: true
+
+     - name: Copia proyecto
+       copy:
+         src: ~/spotesify/
+         dest: /opt/spotesify/
+         owner: alumno
+         group: alumno
+
+     - name: Crear y lanzar contenedores
+       shell: docker compose up -d --build
+       args:
+         chdir: /opt/spotesify
+
+     - name: Healthcheck de la API
+       uri:
+         url: http://localhost/api/health
+         status_code: 200
+       retries: 10
+       delay: 10

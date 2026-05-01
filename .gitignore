@@ -1,0 +1,5 @@
+node_modules/
+*.log
+redis_data/
+.env
+music/*.mp3
